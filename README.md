@@ -26,7 +26,7 @@ In order to build your own, you'll need:
 * [DCS Bios](https://github.com/dcs-bios/dcs-bios/)
 
 ```
-python -m pip install pygmrs pyautogui pyperclip
+python -m pip install mgrs pyautogui pyperclip
 ```
 
 ### Installing
