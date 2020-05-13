@@ -32,7 +32,6 @@ class ImportConvert:
             for char in altitude:
                 real_altitude.append(char)
                 if char == 'T':
-                    print('hi')
                     break
             print(real_altitude)
             real_altitude = ''.join(real_altitude)
