@@ -14,7 +14,7 @@ Extracting unit coordinates and elevation:
 * Pick a target, can be any airfield, unit or building (warehouses) as long as it displays elevation, latitude and longitude
 * Select information to be extracted from the popup, example: Latitude: 25° 19' 22.07" N, Longitude: 055° 31' 52.00" E, Elevation: 98 ft (29 m)
 * Press Shift+C
-* The script should run and convert your ddmmss.ss coordinates to ddmm.mmmm then to MGRS/UTM (because why not), output each key that makes up the information to DCS via DCS Bios interface
+* The script should run and convert your ddmmss.ss coordinates to dd then to MGRS/UTM, and then send the key presses to DCS via the DCS Bios interface
 
 ### Prerequisites
 
@@ -31,8 +31,10 @@ python -m pip install mgrs pyautogui pyperclip
 
 ### Installing
 
-Make sure to have DCS Bios inside the same folder as your main.py script.
-
+Follow DCS Bios installation instructions then run the example script provided
+```
+python example.py
+```
 ## License
 
 This project is licensed under the GNU GPLv3 License - see the [LICENSE](LICENSE) file for details.
