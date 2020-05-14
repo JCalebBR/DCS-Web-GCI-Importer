@@ -1,21 +1,27 @@
+import logging
 import socket
 from time import sleep
-
+from pylog import Logger
 
 class DCS:
     def __init__(self, host='127.0.0.1', port=7778):
         self.con = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.host = host
         self.port = port
+        self.log = Logger()
 
     def keypress(self, key, model='CDU_ANU', delay_r=0.1, delay_a=0.1):
-        model_ = {'UFC':'UFC_',
-                  'CDU_ANU':'CDU_',
-                  'CDU_LSK':'CDU_LSK_'}
-        self.con.sendto(f'{model_[model]}{key} 1\n'.encode('utf-8'), (self.host, self.port))
+        model_ = {'UFC': 'UFC_',
+                  'CDU_ANU': 'CDU_',
+                  'CDU_LSK': 'CDU_LSK_'}
+        self.con.sendto(f'{model_[model]}{key} 1\n'.encode(
+            'utf-8'), (self.host, self.port))
         sleep(delay_r)
-        self.con.sendto(f'{model_[model]}{key} 0\n'.encode('utf-8'), (self.host, self.port))
+        self.con.sendto(f'{model_[model]}{key} 0\n'.encode(
+            'utf-8'), (self.host, self.port))
         sleep(delay_a)
+
+        self.log.debug(key)
 
     def close(self):
         self.con.close()
@@ -29,7 +35,7 @@ class DCS:
                 done = 1
             self.keypress(char)
         self.keypress('9L', 'CDU_LSK')
-    
+
     def ddtodcs(self, lat, lon):
         self.clearcdu()
         lat = str(lat)
@@ -42,7 +48,6 @@ class DCS:
             self.keypress(char)
         self.keypress('9L', 'CDU_LSK')
 
-
     def elevtodcs(self, elevation: str):
         self.clearcdu()
         for num in elevation:
@@ -54,9 +59,9 @@ class DCS:
         name = name.upper()
         for count, char in enumerate(name):
             if count < 12:
-                if char == ' ': 
+                if char == ' ':
                     self.keypress('SPC')
-                else: 
+                else:
                     self.keypress(char)
             else:
                 break
