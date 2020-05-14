@@ -28,9 +28,21 @@ class DCS:
                 self.keypress('7L', 'CDU_LSK')
                 done = 1
             self.keypress(char)
-            print(char)
         self.keypress('9L', 'CDU_LSK')
     
+    def ddtodcs(self, lat, lon):
+        self.clearcdu()
+        lat = str(lat)
+        lon = str(lon)
+        print(lat, lon)
+        for char in lat:
+            self.keypress(char)
+        self.keypress('7L', 'CDU_LSK')
+        for char in lon:
+            self.keypress(char)
+        self.keypress('9L', 'CDU_LSK')
+
+
     def elevtodcs(self, elevation: str):
         self.clearcdu()
         for num in elevation:
@@ -39,8 +51,15 @@ class DCS:
 
     def nametodcs(self, name: str):
         self.clearcdu()
-        for char in name:
-            self.keypress(char)
+        name = name.upper()
+        for count, char in enumerate(name):
+            if count < 12:
+                if char == ' ': 
+                    self.keypress('SPC')
+                else: 
+                    self.keypress(char)
+            else:
+                break
         self.keypress('3R', 'CDU_LSK')
 
     def clearcdu(self):

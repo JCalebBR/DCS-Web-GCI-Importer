@@ -33,12 +33,16 @@ class ImportConvert:
                 real_altitude.append(char)
                 if char == 'T':
                     break
-            print(real_altitude)
             real_altitude = ''.join(real_altitude)
             real_altitude = real_altitude.replace('FT','')
             altitude = real_altitude
 
             return altitude
+        
+        def formatutype(utype: str):
+            utype = utype.replace('Unit Type:', '')
+            
+            return utype
 
         for line in clipboard:
             if not line.find('Latitude:'):
@@ -47,8 +51,10 @@ class ImportConvert:
                 longitude = formatlon(line)
             if not line.find('Altitude:'):
                 altitude = formatalt(line)
+            if not line.find('Unit Type:'):
+                utype = formatutype(line)
         
-        return latitude, longitude, altitude
+        return latitude, longitude, altitude, utype
 
     def dmstomgrs(self, latitude: str, longitude: str):
         utm = mgrs.MGRS()
@@ -58,3 +64,9 @@ class ImportConvert:
         fmgrs = fmgrs.decode('utf-8')
 
         return fmgrs
+        
+    def dmstodd(self, latitude: str, longitude: str):
+        utm = mgrs.MGRS()
+        latitude = utm.dmstodd(latitude)
+        longitude = utm.dmstodd(longitude)
+        return latitude, longitude
