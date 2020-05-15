@@ -1,22 +1,33 @@
 import keyboard
+import json
 
 from pydcs import DCS
 from pywebgci import ImportConvert
 
 
-def main():
-    try:
-        ic = ImportConvert()
-        game = DCS()
-        clipboard = ic.clipimport()
-        lat, lon, alt = ic.formatter(clipboard)
+def main(coord='MGRS', name=True):
+    ic = ImportConvert()
+    clipboard = ic.clipimport()
+    lat, lon, alt, utype = ic.formatter(clipboard)
+    game = DCS()
+    if coord == 'DD':
+        lat, lon = ic.dmstodd(lat, lon)
+        game.ddtodcs(lat, lon)
+    elif coord == 'MGRS':
         fmgrs = ic.dmstomgrs(lat, lon)
-        print(fmgrs)
         game.mgrstodcs(fmgrs)
-        game.elevtodcs(alt)
-    except Exception as ex:
-        print(ex)
+    else:
+        pass
+
+    game.elevtodcs(alt)
+
+    if name: game.nametodcs(utype)
+
 
 if __name__ == "__main__":
-    keyboard.add_hotkey('Shift+C', main)
-    keyboard.wait('esc')
+    with open('config.json', 'r') as f:
+        keys = json.loads(f.read())
+    keyboard.add_hotkey(keys["keybinds"]["copyToDCS"],
+                        lambda: main(coord=keys["coordinateType"],
+                                     name=keys["sendWaypointName"]))
+    keyboard.wait(keys["keybinds"]["exit"])

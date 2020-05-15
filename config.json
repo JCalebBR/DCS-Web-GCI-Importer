@@ -1,0 +1,8 @@
+{
+    "keybinds": {
+        "copyToDCS": "Shift+C",
+        "exit": "Esc"
+    },
+    "coordinateType": "MGRS",
+    "sendWaypointName": true
+}
