@@ -25,16 +25,20 @@ python example.py
 
 ## Getting Started
 
-See [example.py](example.py) for a working example and basis for code examples below.
+See [example.py](example.py) for a working example and basis for the instructions below.
 
-Extracting unit coordinates and elevation:
-* Choose [Persian Gulf at War](https://atwar.online/pgawgci.php) or [Georgia at War](https://atwar.online/gawgci.php)
-* Configure your keybindings and options on config.json
+Extracting target information:
+* Navigate to [Persian Gulf at War](https://atwar.online/pgawgci.php) or [Georgia at War](https://atwar.online/gawgci.php)
+* (Optional) Configure your keybindings and options on config.json
+* (Observation) Naming feature is experimental for now, it will only work if the popup has the Unit Type field [example]() to be addressed soon
 * Open up DCS: A-10C and make sure your CDU is running properly (aligned)
-* Run example.py
+* Run example.py 
+```
+python example.py
+```
 * Pick a target on the chosen website, it can be any airfield, unit or building (warehouses) as long as it displays elevation, latitude and longitude
-* Select information to be extracted from the popup, example: Latitude: 25° 19' 22.07" N, Longitude: 055° 31' 52.00" E, Elevation: 98 ft (29 m)
-* Press Shift+C (default key)
+* Select information to be extracted from the popup, example: SA-18 Igla Manpad, Latitude: 25° 19' 22.07" N, Longitude: 055° 31' 52.00" E, Elevation: 98 ft (29 m)
+* Press Shift+C (default)
 * The script should run and convert your ddmmss.ss coordinates to dd then to MGRS/UTM, and then send the key presses to DCS via the DCS Bios interface
 
 ## License
