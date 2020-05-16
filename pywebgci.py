@@ -15,22 +15,23 @@ class ImportConvert:
         pyautogui.hotkey('Ctrl', 'Insert')
         clipboard = pyperclip.paste()
         self.log.debug(clipboard)
+
         clipboard = clipboard.splitlines()
 
         self.log.debug(clipboard)
 
         return clipboard
 
-    def formatter(self, clipboard: list):
-        def formatlat(latitude: str):
+    def formatter(self, clipboard):
+        def formatlat(latitude):
             latitude = latitude.replace('°', '').replace('\'', '').replace(
                 '\"', '').replace('Latitude:', '').replace(' ', '')
 
             self.log.debug(latitude)
-            
+
             return latitude
 
-        def formatlon(longitude: str):
+        def formatlon(longitude):
             longitude = longitude.replace('°', '').replace('\'', '').replace(
                 '\"', '').replace('Longitude:', '').replace(' ', '')
 
@@ -38,7 +39,7 @@ class ImportConvert:
 
             return longitude
 
-        def formatalt(altitude: str):
+        def formatalt(altitude):
             real_altitude = list()
 
             altitude = altitude.replace('Altitude:', '').replace(' ', '')
@@ -55,26 +56,32 @@ class ImportConvert:
 
             return altitude
 
-        def formatutype(utype: str):
-            utype = utype.replace('Unit Type:', '')
-            
-            self.log.debug(utype)
+        # def formatutype(utype):
+        #     utype = utype.replace('Unit Type:', '')
+        #     self.log.debug(utype)
+        #     return utype
 
-            return utype
+        def formatname(name):
+            name = name.replace('-', ' ')
 
-        for line in clipboard:
-            if not line.find('Latitude:'):
-                latitude = formatlat(line)
-            if not line.find('Longitude:'):
-                longitude = formatlon(line)
-            if not line.find('Altitude:'):
-                altitude = formatalt(line)
-            if not line.find('Unit Type:'):
-                utype = formatutype(line)
-        
-        return latitude, longitude, altitude, utype
+            self.log.debug(name)
 
-    def dmstomgrs(self, latitude: str, longitude: str):
+            return name
+
+        for idx, line in enumerate(clipboard):
+            if idx == 0:
+                name = formatname(name)
+            else:
+                if not line.find('Latitude:'):
+                    latitude = formatlat(line)
+                if not line.find('Longitude:'):
+                    longitude = formatlon(line)
+                if not line.find('Altitude:'):
+                    altitude = formatalt(line)
+
+        return latitude, longitude, altitude, name
+
+    def dmstomgrs(self, latitude, longitude):
         utm = mgrs.MGRS()
         latitude = utm.dmstodd(latitude)
         longitude = utm.dmstodd(longitude)
@@ -85,7 +92,7 @@ class ImportConvert:
 
         return fmgrs
 
-    def dmstodd(self, latitude: str, longitude: str):
+    def dmstodd(self, latitude, longitude):
         utm = mgrs.MGRS()
         latitude = utm.dmstodd(latitude)
         longitude = utm.dmstodd(longitude)

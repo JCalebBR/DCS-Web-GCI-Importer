@@ -26,7 +26,7 @@ class DCS:
     def close(self):
         self.con.close()
 
-    def mgrstodcs(self, mgrs: str):
+    def mgrstodcs(self, mgrs):
         self.clearcdu()
         done = 0
         for idx, char in enumerate(mgrs):
@@ -48,13 +48,13 @@ class DCS:
             self.keypress(char)
         self.keypress('9L', 'CDU_LSK')
 
-    def elevtodcs(self, elevation: str):
+    def elevtodcs(self, elevation):
         self.clearcdu()
         for num in elevation:
             self.keypress(num)
         self.keypress('5L', 'CDU_LSK')
 
-    def nametodcs(self, name: str):
+    def nametodcs(self, name):
         self.clearcdu()
         name = name.upper()
         for count, char in enumerate(name):
