@@ -6,6 +6,7 @@ Information must be provided via selection in a Windows environment, Linux has n
 ### Prerequisites
 
 In order to build your own, you'll need:
+* Python 3.7.x
 * [pymgrs](https://pypi.org/project/mgrs/)
 * [pyautogui](https://pypi.org/project/PyAutoGUI/)
 * [pyperclip](https://pypi.org/project/pyperclip/)
