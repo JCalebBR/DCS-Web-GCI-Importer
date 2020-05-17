@@ -1,9 +1,9 @@
 # DCS WebGCI Importer
 
 A Python tool to help handling Hoggit's at War - WebGCI website coordinates and information of targets into DCS (Digital Combat Simulator).
-Information must be provided via selection in a Windows environment, Linux has not been tested as of 12th August 2019 (should work assuming modules are cross-platform).
+Information must be provided via selection (hold left-click, drag) in a Windows environment (others may work).
 
-[Video demo](https://streamable.com/btf0rg)
+[Video demo](https://youtu.be/LLg_pqPNMb8)
 
 ### Requirements
 
@@ -11,7 +11,7 @@ In order to build your own, you'll need:
 * Python 3.7.x
 * [pymgrs](https://pypi.org/project/mgrs/)
 * [pyautogui](https://pypi.org/project/PyAutoGUI/)
-* [pyperclip](https://pypi.org/project/pyperclip/)
+* [pywin32](https://pypi.org/project/pywin32/)
 * [keyboard](https://pypi.org/project/keyboard/)
 * [DCS Bios](https://github.com/dcs-bios/dcs-bios/)
 
@@ -35,9 +35,9 @@ Extracting target information:
 * Navigate to [Persian Gulf at War](https://atwar.online/pgawgci.php) or [Georgia at War](https://atwar.online/gawgci.php)
 * (Optional) Configure your keybindings and options on config.json
 * Start DCS: A-10C and make sure your CDU is running properly (aligned) and in the waypoint edit page
-* Run example.py 
+* Run main.py
 ```
-python example.py
+python main.py
 ```
 * Pick a target on the chosen website, it can be any airfield, unit or building (warehouses) as long as it displays elevation, latitude and longitude
 * Select information to be extracted from the popup, example: SA-18 Igla Manpad, Latitude: 25° 19' 22.07" N, Longitude: 055° 31' 52.00" E, Elevation: 98 ft (29 m)
