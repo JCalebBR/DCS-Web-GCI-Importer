@@ -1,18 +1,23 @@
 import mgrs
 import pyautogui
 import pyperclip
-
+import win32clipboard
 from pylog import Logger
-
+import time
 
 class ImportConvert:
     def __init__(self):
         self.log = Logger()
 
     def clipimport(self):
-        clipboard = None
+        win32clipboard.OpenClipboard()
+        win32clipboard.EmptyClipboard()
+        win32clipboard.CloseClipboard()
         pyautogui.hotkey('Ctrl', 'Insert')
-        clipboard = pyperclip.paste()
+        time.sleep(1)
+        win32clipboard.OpenClipboard()
+        clipboard = win32clipboard.GetClipboardData()
+        win32clipboard.CloseClipboard()
         self.log.debug(clipboard)
 
         clipboard = clipboard.splitlines()

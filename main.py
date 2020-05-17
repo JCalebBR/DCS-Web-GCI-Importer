@@ -5,16 +5,20 @@ import keyboard
 from pydcs import DCS
 from pywebgci import ImportConvert
 
+
 class Main:
     def __init__(self):
         self.ic = ImportConvert()
         self.game = DCS()
-    
-    def loop(self, coord='MGRS', name=True):
-        clipboard = self.ic.clipimport()
-        name, lat, lon, alt = self.ic.formatter(clipboard)
-        
-        if name: self.game.nametodcs(name)
+
+    def copy(self):
+        self.clipboard = self.ic.clipimport()
+
+    def paste(self, coord='MGRS', name=True):
+        name, lat, lon, alt = self.ic.formatter(self.clipboard)
+
+        if name:
+            self.game.nametodcs(name)
 
         if coord == 'MGRS':
             fmgrs = self.ic.dmstomgrs(lat, lon)
@@ -33,6 +37,8 @@ if __name__ == "__main__":
         keys = json.loads(f.read())
     main = Main()
     keyboard.add_hotkey(keys["keybinds"]["copyToDCS"],
-                        lambda: main.loop(coord=keys["coordinateType"],
-                                     name=keys["sendWaypointName"]))
+                        lambda: main.copy())
+    keyboard.add_hotkey(keys["keybinds"]["pasteToDCS"],
+                        lambda: main.paste(coord=keys["coordinateType"],
+                                           name=keys["sendWaypointName"]))
     keyboard.wait(keys["keybinds"]["exit"])
