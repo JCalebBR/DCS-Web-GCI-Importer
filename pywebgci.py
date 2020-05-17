@@ -1,36 +1,41 @@
 import mgrs
 import pyautogui
 import pyperclip
-
+import win32clipboard
 from pylog import Logger
-from pydcs import DCS
-
+import time
 
 class ImportConvert:
     def __init__(self):
         self.log = Logger()
 
     def clipimport(self):
-        clipboard = None
+        win32clipboard.OpenClipboard()
+        win32clipboard.EmptyClipboard()
+        win32clipboard.CloseClipboard()
         pyautogui.hotkey('Ctrl', 'Insert')
-        clipboard = pyperclip.paste()
+        time.sleep(1)
+        win32clipboard.OpenClipboard()
+        clipboard = win32clipboard.GetClipboardData()
+        win32clipboard.CloseClipboard()
         self.log.debug(clipboard)
+
         clipboard = clipboard.splitlines()
 
         self.log.debug(clipboard)
 
         return clipboard
 
-    def formatter(self, clipboard: list):
-        def formatlat(latitude: str):
+    def formatter(self, clipboard):
+        def format_lat(latitude):
             latitude = latitude.replace('°', '').replace('\'', '').replace(
                 '\"', '').replace('Latitude:', '').replace(' ', '')
 
             self.log.debug(latitude)
-            
+
             return latitude
 
-        def formatlon(longitude: str):
+        def format_lon(longitude):
             longitude = longitude.replace('°', '').replace('\'', '').replace(
                 '\"', '').replace('Longitude:', '').replace(' ', '')
 
@@ -38,7 +43,7 @@ class ImportConvert:
 
             return longitude
 
-        def formatalt(altitude: str):
+        def format_alt(altitude):
             real_altitude = list()
 
             altitude = altitude.replace('Altitude:', '').replace(' ', '')
@@ -55,37 +60,48 @@ class ImportConvert:
 
             return altitude
 
-        def formatutype(utype: str):
-            utype = utype.replace('Unit Type:', '')
-            
-            self.log.debug(utype)
+        # def format_utype(utype):
+        #     utype = utype.replace('Unit Type:', '')
+        #     self.log.debug(utype)
+        #     return utype
 
-            return utype
+        def format_name(name):
+            name = name.replace('-', ' ')
 
-        for line in clipboard:
-            if not line.find('Latitude:'):
-                latitude = formatlat(line)
-            if not line.find('Longitude:'):
-                longitude = formatlon(line)
-            if not line.find('Altitude:'):
-                altitude = formatalt(line)
-            if not line.find('Unit Type:'):
-                utype = formatutype(line)
-        
-        return latitude, longitude, altitude, utype
+            self.log.debug(name)
 
-    def dmstomgrs(self, latitude: str, longitude: str):
-        utm = mgrs.MGRS()
-        latitude = utm.dmstodd(latitude)
-        longitude = utm.dmstodd(longitude)
-        fmgrs = utm.toMGRS(latitude, longitude, MGRSPrecision=5)
-        fmgrs = fmgrs.decode('utf-8')
+            return name
 
-        self.log.debug(fmgrs)
+        name = latitude = longitude = altitude = None
 
-        return fmgrs
+        for idx, line in enumerate(clipboard):
+            if idx == 0:
+                name = format_name(line)
+            else:
+                if not line.find('Latitude:'):
+                    latitude = format_lat(line)
+                if not line.find('Longitude:'):
+                    longitude = format_lon(line)
+                if not line.find('Altitude:'):
+                    altitude = format_alt(line)
 
-    def dmstodd(self, latitude: str, longitude: str):
+        return name, latitude, longitude, altitude
+
+    def dmstomgrs(self, latitude, longitude):
+        try:
+            utm = mgrs.MGRS()
+            latitude = utm.dmstodd(latitude)
+            longitude = utm.dmstodd(longitude)
+            fmgrs = utm.toMGRS(latitude, longitude, MGRSPrecision=5)
+            fmgrs = fmgrs.decode('utf-8')
+
+            self.log.debug(fmgrs)
+
+            return fmgrs
+        except TypeError as ex:
+            self.log.exception(ex)
+
+    def dmstodd(self, latitude, longitude):
         utm = mgrs.MGRS()
         latitude = utm.dmstodd(latitude)
         longitude = utm.dmstodd(longitude)
