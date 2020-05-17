@@ -1,7 +1,7 @@
 {
     "keybinds": {
-        "copyToDCS": "Shift+C",
-        "exit": "Esc"
+        "copyToDCS": "Windows+C",
+        "exit": "Windows+Esc"
     },
     "coordinateType": "MGRS",
     "sendWaypointName": true

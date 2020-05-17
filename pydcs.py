@@ -1,7 +1,9 @@
 import logging
 import socket
 from time import sleep
+
 from pylog import Logger
+
 
 class DCS:
     def __init__(self, host='127.0.0.1', port=7778):
@@ -25,22 +27,23 @@ class DCS:
 
     def close(self):
         self.con.close()
+        self.log.debug("DCS Bios Connection closed")
 
     def mgrstodcs(self, mgrs):
-        self.clearcdu()
-        done = 0
-        for idx, char in enumerate(mgrs):
-            if (idx > 2 and done == 0):
-                self.keypress('7L', 'CDU_LSK')
-                done = 1
-            self.keypress(char)
-        self.keypress('9L', 'CDU_LSK')
+        try:
+            self.clearcdu()
+            done = 0
+            for idx, char in enumerate(mgrs):
+                if (idx > 2 and done == 0):
+                    self.keypress('7L', 'CDU_LSK')
+                    done = 1
+                self.keypress(char)
+            self.keypress('9L', 'CDU_LSK')
+        except TypeError as ex:
+            self.log.exception(ex)
 
     def ddtodcs(self, lat, lon):
         self.clearcdu()
-        lat = str(lat)
-        lon = str(lon)
-        print(lat, lon)
         for char in lat:
             self.keypress(char)
         self.keypress('7L', 'CDU_LSK')
@@ -49,10 +52,13 @@ class DCS:
         self.keypress('9L', 'CDU_LSK')
 
     def elevtodcs(self, elevation):
-        self.clearcdu()
-        for num in elevation:
-            self.keypress(num)
-        self.keypress('5L', 'CDU_LSK')
+        try:
+            self.clearcdu()
+            for num in elevation:
+                self.keypress(num)
+            self.keypress('5L', 'CDU_LSK')
+        except TypeError as ex:
+            self.log.exception(ex)
 
     def nametodcs(self, name):
         self.clearcdu()

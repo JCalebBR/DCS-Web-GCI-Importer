@@ -3,36 +3,38 @@
 A Python tool to help handling Hoggit's at War - WebGCI website coordinates and information of targets into DCS (Digital Combat Simulator).
 Information must be provided via selection in a Windows environment, Linux has not been tested as of 12th August 2019 (should work assuming modules are cross-platform).
 
-### Prerequisites
+[Video demo](https://streamable.com/btf0rg)
+
+### Requirements
 
 In order to build your own, you'll need:
 * Python 3.7.x
 * [pymgrs](https://pypi.org/project/mgrs/)
 * [pyautogui](https://pypi.org/project/PyAutoGUI/)
 * [pyperclip](https://pypi.org/project/pyperclip/)
-* socket
+* [keyboard](https://pypi.org/project/keyboard/)
 * [DCS Bios](https://github.com/dcs-bios/dcs-bios/)
-
-```
-python -m pip install mgrs pyautogui pyperclip
-```
 
 ### Installing
 
-Follow DCS Bios installation instructions then run the example script provided
+To ease the install process a requirements file is provided and can be used as follows. This however doesn't install DCS Bios as they have their own setup, please follow their guidelines for a clean install.
 ```
-python example.py
+python -m pip install -r requirements.txt
 ```
+
+After everything is ready, run the main script.
+```
+python main.py
+```
+
+Expected behaviour is for the the console cursor to hang (as if waiting), that means the script is waiting for user input.
 
 ## Getting Started
-
-See [example.py](example.py) for a working example and basis for the instructions below.
 
 Extracting target information:
 * Navigate to [Persian Gulf at War](https://atwar.online/pgawgci.php) or [Georgia at War](https://atwar.online/gawgci.php)
 * (Optional) Configure your keybindings and options on config.json
-* (Observation) Naming feature is experimental for now, it will only work if the popup has the Unit Type field [example]() to be addressed soon
-* Open up DCS: A-10C and make sure your CDU is running properly (aligned)
+* Start DCS: A-10C and make sure your CDU is running properly (aligned) and in the waypoint edit page
 * Run example.py 
 ```
 python example.py
@@ -40,7 +42,7 @@ python example.py
 * Pick a target on the chosen website, it can be any airfield, unit or building (warehouses) as long as it displays elevation, latitude and longitude
 * Select information to be extracted from the popup, example: SA-18 Igla Manpad, Latitude: 25° 19' 22.07" N, Longitude: 055° 31' 52.00" E, Elevation: 98 ft (29 m)
 * Press Shift+C (default)
-* The script should run and convert your ddmmss.ss coordinates to dd then to MGRS/UTM, and then send the key presses to DCS via the DCS Bios interface
+* The script should run and convert your ddmmss.ss coordinates to dd then to MGRS/UTN and send the corresponding key presses to DCS via DCS Bios
 
 ## License
 
