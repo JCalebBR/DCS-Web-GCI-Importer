@@ -1,6 +1,7 @@
 {
     "keybinds": {
-        "copyToDCS": "Windows+C",
+        "copyToDCS": "Tab+C",
+        "pasteToDCS": "Tab+V",
         "exit": "Windows+Esc"
     },
     "coordinateType": "MGRS",

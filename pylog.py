@@ -10,22 +10,24 @@ class Logger:
 
         self.log = logging.getLogger(f'log-{random.randrange(1000,9000)}')
         self.log.setLevel(logging.DEBUG)
-
-        self.f = '%(asctime)s :: %(levelname)s :: %(message)s : %(name)s'
-        self.formatter = logging.Formatter(self.f, datefmt='%H:%M:%S')
         
-        self.console = logging.StreamHandler()
-        self.console.setFormatter(self.formatter)
-        self.log.addHandler(self.console)
+        if not self.log.handlers:
+            self.f = '%(asctime)s :: %(levelname)s :: %(message)s : %(name)s'
+            self.formatter = logging.Formatter(self.f, datefmt='%H:%M:%S')
+            
+            self.console = logging.StreamHandler()
+            self.console.setFormatter(self.formatter)
+            self.log.addHandler(self.console)
 
-        try:
-            self.fhandler = logging.FileHandler(f'logs/log-{self.now}.log')
-        except FileNotFoundError:
-            os.mkdir('logs')
-            self.fhandler = logging.FileHandler(f'logs/log-{self.now}.log')
-        
-        self.fhandler.setFormatter(self.formatter)
-        self.log.addHandler(self.fhandler)
+            try:
+                self.fhandler = logging.FileHandler(f'logs/log-{self.now}.log')
+            except FileNotFoundError:
+                os.mkdir('logs')
+                self.fhandler = logging.FileHandler(f'logs/log-{self.now}.log')
+            
+            self.fhandler.setFormatter(self.formatter)
+            self.log.addHandler(self.fhandler)
+            self.log.addFilter(DuplicateFilter())
 
     def debug(self, msg, *args, **kwargs):
         return self.log.debug(msg, *args, **kwargs)
@@ -44,3 +46,11 @@ class Logger:
     
     def exception(self, exception, *args, **kwargs):
         return self.log.exception(exception, *args, **kwargs)
+
+class DuplicateFilter(logging.Filter):
+    def filter(self, record):
+        current_log = (record.module, record.levelno, record.msg)
+        if current_log != getattr(self, "last_log", None):
+            self.last_log = current_log
+            return True
+        return False
