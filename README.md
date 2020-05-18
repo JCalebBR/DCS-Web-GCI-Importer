@@ -42,7 +42,7 @@ python main.py
 * Pick a target on the chosen website, it can be any airfield, unit or building (warehouses) as long as it displays elevation, latitude and longitude
 * Select information to be extracted from the popup, example: SA-18 Igla Manpad, Latitude: 25° 19' 22.07" N, Longitude: 055° 31' 52.00" E, Elevation: 98 ft (29 m)
 * Press Shift+C (default)
-* The script should run and convert your ddmmss.ss coordinates to dd then to MGRS/UTN and send the corresponding key presses to DCS via DCS Bios
+* The script should run and convert your ddmmss.ss coordinates to dd then to MGRS/UTM and send the corresponding key presses to DCS via DCS Bios
 
 ## License
 
