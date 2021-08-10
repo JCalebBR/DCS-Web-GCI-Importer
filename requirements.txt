@@ -1,4 +1,4 @@
 keyboard==0.13.5
 mgrs==1.3.6
 PyAutoGUI==0.9.50
-pywin32==227
+pywin32==301
